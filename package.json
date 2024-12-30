@@ -1,0 +1,21 @@
+{
+  "name": "d-tinder",
+  "version": "1.0.0",
+  "description": "Tinder for devs.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js"
+  },
+  "keywords": [
+    "tinder",
+    "developers",
+    "nodejs",
+    "javascript"
+  ],
+  "author": "Snehlata",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
