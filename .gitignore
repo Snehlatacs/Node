@@ -1,1 +1,5 @@
 node_modules
+src\auth.js
+src\database.js
+src\dummy_middleware.js
+src\error_handling.js

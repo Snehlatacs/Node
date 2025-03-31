@@ -13,9 +13,8 @@ app.use(
   console.log("Handling /user request");
   //res.send("sending third response")
   next();
-},
-
-(req, res) => {
+});
+app.get("/user",(req, res) => {
   console.log("Handling /user request");
   res.send("sending third response")
 });
