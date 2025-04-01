@@ -361,3 +361,4 @@ The app.all('/user') route will handle GET, POST, PUT, DELETE, etc., requests to
 ** write a dummy middleware for admin
 ** write a dummy middleware for all user routes, except user/login
 **error handling using app.use("/", (err, req, res, next) {});
+**Difference between json and JavaScript
