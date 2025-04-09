@@ -1,20 +1,23 @@
 const express = require('express');
-const connectDB = require('../config/data_base'); 
-const User = require('../models/user');
-const { validateSignupData } = require('../utils/validation');
+const connectDB = require('./config/data_base'); 
+const User = require('./models/user');
+const { validateSignupData } = require('./utils/validation');
 const bcrypt = require('bcrypt');
 const validator = require('validator');
-
+const cookieParser = require("cookie-parser");
+const jwt = require("jsonwebtoken");
+const { userAuth } = require("./middlewares/auth");
 
 const app = express();
 app.use(express.json());
+app.use(cookieParser());
 
 
 app.post("/signup", async (req, res) => {
  try{
    validateSignupData(req);
 
-   const{ firstName, lastName, emailId, password} = req.body;
+   const{ firstName, lastName, emailId, password, gender, dob } = req.body;
 
    const passwordHash = await bcrypt.hash(password, 10);
    console.log("Hashed Password:", passwordHash);
@@ -25,12 +28,14 @@ app.post("/signup", async (req, res) => {
       lastName,
       emailId,
       password: passwordHash,
+      gender,
+      dob,
     });
     await user.save();
     console.log("Saved Data:", user);
     res.send("User Created Successfully");
  }catch(err){
-    res.status(400).send("ERROR: " + err);
+    res.status(400).send("ERROR: " + err.message);
  }                                                                              
 });
 
@@ -43,8 +48,11 @@ app.post("/login", async (req, res) => {
       throw new Error("Invalid Credentials");
    }
 
-   const isPasswordValid = await bcrypt.compare(password, user.password);
+   const isPasswordValid = await user.validatePassword(password);
    if(isPasswordValid){
+      const token  = await user.getJWT();
+
+      res.cookie("token", token, {expires: new Date(Date.now() + 8*3600000),});
       res.send("Login Successful!");
    }
    else 
@@ -53,9 +61,27 @@ app.post("/login", async (req, res) => {
    }
 }
 catch(err){
-   res.status(400).send("ERROR: " + err);
+   res.status(400).send("ERROR: " + err.message);
 }
 });
+
+app.post("/sendConnectRequest", userAuth, async (req, res) => {
+  const user = req.user;
+
+  console.log("Sending a connection request");
+
+  res.send(user.firstName + " sent Connection request !!");
+});
+
+app.get("/profile", userAuth, async (req, res) => {
+try{
+   const user = req.user;
+   res.send(user);
+   
+}catch(err){
+      res.status(400).send("ERROR: " + err.message);
+   }
+})
 
 app.get("/user", async (req, res) => {
 
@@ -188,5 +214,5 @@ connectDB()
     });
 })  
 .catch((err) => {   
-        console.error('MongoDB connection failed:', err);
+        console.error('MongoDB connection failed:', err.message);
 });
