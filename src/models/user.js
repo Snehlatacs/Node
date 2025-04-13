@@ -35,6 +35,37 @@ const userSchema = new mongoose.Schema({
             }
         }
     },
+    confirmPassword: {
+        type: String,
+        required: true,
+        validate: {
+            validator: function (value) {
+                return value === this.password;
+            },
+            message: "Confirm password must match the password",
+        },
+    },
+
+    skill:{
+        type: String,
+        required:true,
+        validate(value){
+            if(!validator.isLength(value, { max: 100 })){
+                throw new Error("Skill should be less than 100 characters");
+            }
+        }
+    },
+
+    education:{
+        type: String,
+        required:true,
+        validate(value){
+            if(!validator.isLength(value, { max: 100 })){
+                throw new Error("Education should be less than 100 characters");
+            }
+        }
+    },
+
     dob:{   
         type: Date,
         required:true,
@@ -75,7 +106,7 @@ const userSchema = new mongoose.Schema({
     phone:{
         type: String,
         validate(value){
-            if(!validator.isMobilePhone(value, 'any', { strictMode: false })){
+            if(!validator.isMobilePhone(value, 'any', { strictMode: true })){
                 throw new Error("Invalid Phone Number");
             }
         }
@@ -99,6 +130,12 @@ const userSchema = new mongoose.Schema({
     isBlocked:{
         type: Boolean,
         default: false,
+    },
+    resetPasswordToken: {
+        type: String,
+    },
+    resetPasswordExpires: {
+        type: Date,
     }
 },
 {

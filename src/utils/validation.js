@@ -13,6 +13,29 @@ const validateSignupData = (req) =>{
     }
 };
 
-module.exports = {
+const validateProfileUpdates = (updates) => {
+    const allowedUpdates = [
+        "firstName",
+        "lastName",
+        "email",
+        "dob",
+        "skill",
+        "education",
+        "experience",
+        "profilePic",
+        "bio",
+        "gender",
+        "phone",
+        "address",
+    ];
+
+    const isValidOperation = updates.every((update) => allowedUpdates.includes(update));
+    if (!isValidOperation) {
+        throw new Error("Invalid updates!");
+    }
+};
+
+module.exports = { 
     validateSignupData,
-}
+    validateProfileUpdates
+};
