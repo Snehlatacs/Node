@@ -15,7 +15,7 @@ const connectionRequestSchema = new mongoose.Schema({
         type: String,
         require: true,
         enum: {
-            values: ["intrested", "pending", "accepted", "rejected"],
+            values: ["intrested", "ignored", "accepted", "rejected"],
             message: "{VALUE} is not a valid status", 
         },
         default: "pending",
@@ -24,20 +24,20 @@ const connectionRequestSchema = new mongoose.Schema({
 );
 
 
-connectionRequestSchema.pre("save", async function (next) {
-    const connectionRequest = this;
-    if (connectionRequest.isModified("status")) {
-        if (connectionRequest.status === "accepted") {
-            connectionRequest.status = "intrested";
-        }
-    }
-    next();
-}
-);
+// connectionRequestSchema.pre("save", async function (next) {
+//     const connectionRequest = this;
+//     if (connectionRequest.isModified("status")) {
+//         if (connectionRequest.status === "accepted") {
+//             connectionRequest.status = "intrested";
+//         }
+//     }
+//     next();
+// }
+// );
 
   
-connectionRequestSchema.index({ senderId: 1, receiverId: 1 }, { unique: true });
-connectionRequestSchema.index({ status: 1 });
+// connectionRequestSchema.index({ senderId: 1, receiverId: 1 }, { unique: true });
+// connectionRequestSchema.index({ status: 1 });
 
 const ConnectionRequestModel = new mongoose.model(
     "ConnectionRequest",

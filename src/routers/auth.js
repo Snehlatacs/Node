@@ -12,7 +12,6 @@ authRouter.post("/signup", async (req, res) => {
    const{ firstName, lastName, emailId, password, gender, dob, skill, education} = req.body;
 
    const passwordHash = await bcrypt.hash(password, 10);
-   console.log("Hashed Password:", passwordHash);
 
     console.log("Received Data:", req.body);
     const user = new User({
@@ -27,7 +26,6 @@ authRouter.post("/signup", async (req, res) => {
       confirmPassword: passwordHash
     });
     await user.save();
-    console.log("Saved Data:", user);
     res.send("User Created Successfully");
  }catch(err){
     res.status(400).send("ERROR: " + err.message);
