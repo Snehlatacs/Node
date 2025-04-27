@@ -1,2 +1,2 @@
 node_modules
-src\read_only
+#read_only/
