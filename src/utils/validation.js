@@ -37,6 +37,8 @@ const validateProfileUpdates = (updates) => {
     }
 };
 
+
+
 module.exports = { 
     validateSignupData,
     validateProfileUpdates
