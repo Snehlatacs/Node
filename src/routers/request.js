@@ -83,9 +83,9 @@ requestRouter.post("/request/send/:status/:userId", userAuth, async (req, res) =
             return res.status(400).json({ message: "Invalid request ID." });
         }
 
-        const allowedStatuses = ["accepted", "rejected", "ignored"]; // Allowed statuses for the connection request
+        const allowedStatuses = ["accepted", "rejected"]; // Allowed statuses for the connection request
         if (!allowedStatuses.includes(status)) {
-            return res.status(400).json({ message: "Invalid status. Allowed statuses are 'accepted' and 'ignored'." });
+            return res.status(400).json({ message: "Invalid status. Allowed statuses are 'accepted' and 'rejected'." });
         }
 
         // Find the connection request
